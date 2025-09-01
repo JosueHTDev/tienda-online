@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tienda Online</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#4a86e8',   
+              secondary: '#3c4f76', 
+              accent: '#ff6b6b',   
+              light: '#f8fafc',   
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .product-card {
+        transition: all 0.3s ease;
+      }
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .category-item {
+        transition: all 0.2s ease;
+      }
+      .category-item:hover, .category-item.active {
+        background-color: #4a86e8 !important;
+        color: white !important;
+      }
+      .product-image {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+      }
+      .detail-image {
+        height: 150px;
+        object-fit: cover;
+        width: 100%;
+      }
+      .sticky-detail {
+        position: sticky;
+        top: 20px;
+      }
+      @media (max-width: 1024px) {
+        .sticky-detail {
+          position: relative;
+          top: 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-primary to-secondary text-white shadow-lg">
+      <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <i class="fas fa-store text-2xl mr-2"></i>
+            <h1 class="text-2xl font-bold">Tienda Online</h1>
+          </div>
+          <div class="flex space-x-4">
+            <button
+              class="bg-white text-primary hover:bg-gray-100 py-2 px-4 rounded-full flex items-center"
+              onclick="openModal('addCategoriaModal')"
+            >
+              <i class="fas fa-plus-circle mr-2"></i> Categoría
+            </button>
+            <button
+              class="bg-accent text-white hover:bg-opacity-90 py-2 px-4 rounded-full flex items-center"
+              onclick="openModal('addProductoModal')"
+            >
+              <i class="fas fa-plus-circle mr-2"></i> Producto
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <div class="container mx-auto px-4 py-6">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <!-- Columna izquierda-->
+        <div class="bg-white rounded-xl shadow p-5 h-fit lg:col-span-1">
+          <h2 class="text-xl font-bold text-secondary mb-4 flex items-center">
+            <i class="fas fa-list mr-2"></i> Categorías
+          </h2>
+          <ul class="space-y-2" id="categoriasMenu">
+            <li>
+              <a class="category-item active block bg-primary text-white rounded-lg py-2 px-4 font-medium" 
+                 href="javascript:void(0)" data-id="all" onclick="loadAllProducts()">
+                <i class="fas fa-th-large mr-2"></i> Mostrar Todo
+              </a>
+            </li>
+            <!-- Las categorías se cargarán aquí -->
+          </ul>
+          
+          <div class="mt-6">
+            <button 
+              class="w-full bg-gray-100 hover:bg-gray-200 text-secondary py-2 px-4 rounded-lg flex items-center justify-center"
+              onclick="openModal('addImagenModal')"
+            >
+              <i class="fas fa-image mr-2"></i> Agregar Imagen
+            </button>
+          </div>
+        </div>
+
+        <!-- Columna central - Productos (más ancha) -->
+        <div class="bg-white rounded-xl shadow p-5 lg:col-span-3">
+          <h2 class="text-xl font-bold text-secondary mb-4 flex items-center">
+            <i class="fas fa-boxes mr-2"></i> 
+            <span id="subtituloCategoria">Todos los productos</span>
+          </h2>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="productosList">
+            <!-- Los productos se cargarán aquí -->
+          </div>
+        </div>
+
+        <!-- Columna derecha - Detalles del producto -->
+        <div class="bg-white rounded-xl shadow p-5 h-fit sticky-detail lg:col-span-1">
+          <h2 class="text-xl font-bold text-secondary mb-4 flex items-center">
+            <i class="fas fa-info-circle mr-2"></i> Detalles del Producto
+          </h2>
+          
+          <div id="detalleProducto" class="text-center py-10 text-gray-400">
+            <i class="fas fa-mouse-pointer text-4xl mb-3"></i>
+            <p>Selecciona un producto para ver sus detalles</p>
+          </div>
+          
+          <div id="detalleContenido" class="hidden">
+            <h3 id="detalleNombre" class="text-lg font-bold text-secondary mb-2"></h3>
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-2xl font-bold text-primary">S/. <span id="detallePrecio"></span></span>
+              <span class="bg-gray-100 text-secondary rounded-full px-3 py-1 text-sm" id="detalleCategoria"></span>
+            </div>
+            
+            <div class="mb-4">
+              <h4 class="font-medium text-secondary mb-2">Imágenes del producto</h4>
+              <div class="grid grid-cols-1 gap-2" id="detalleImagenes">
+                <!-- Las imágenes se cargarán aquí -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Agregar Categoría -->
+    <div id="addCategoriaModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-xl shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
+        <div class="flex justify-between items-center p-6 border-b">
+          <h3 class="text-xl font-semibold text-secondary">Agregar Categoría</h3>
+          <button type="button" onclick="closeModal('addCategoriaModal')" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6">
+          <form id="formCategoria">
+            <input
+              type="text"
+              class="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
+              id="categoriaNombre"
+              placeholder="Nombre de la categoría"
+              required
+            />
+            <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 px-4 rounded-lg font-medium">
+              <i class="fas fa-save mr-2"></i> Guardar Categoría
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Agregar Producto -->
+    <div id="addProductoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-xl shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
+        <div class="flex justify-between items-center p-6 border-b">
+          <h3 class="text-xl font-semibold text-secondary">Agregar Producto</h3>
+          <button type="button" onclick="closeModal('addProductoModal')" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6">
+          <form id="formProducto">
+            <input
+              type="text"
+              class="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
+              id="productoNombre"
+              placeholder="Nombre del producto"
+              required
+            />
+            <input
+              type="number"
+              step="0.01"
+              class="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
+              id="productoPrecio"
+              placeholder="Precio"
+              required
+            />
+            <select
+              id="productoCategoria"
+              class="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            ></select>
+            <button type="submit" class="w-full bg-accent hover:bg-opacity-90 text-white py-3 px-4 rounded-lg font-medium">
+              <i class="fas fa-save mr-2"></i> Guardar Producto
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Agregar Imagen -->
+    <div id="addImagenModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-xl shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
+        <div class="flex justify-between items-center p-6 border-b">
+          <h3 class="text-xl font-semibold text-secondary">Agregar Imagen</h3>
+          <button type="button" onclick="closeModal('addImagenModal')" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6">
+          <form id="formImagen">
+            <select
+              id="imagenProductoSelect"
+              class="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            ></select>
+            <input
+              type="text"
+              class="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
+              id="imagenURL"
+              placeholder="URL de la imagen"
+              required
+            />
+            <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 px-4 rounded-lg font-medium">
+              <i class="fas fa-image mr-2"></i> Agregar Imagen
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Funciones para manejar modales -->
+    <script>
+      function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+        document.getElementById(id).classList.add('flex');
+      }
+      
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('flex');
+        document.getElementById(id).classList.add('hidden');
+      }
+      
+      document.querySelectorAll('[id$="Modal"]').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closeModal(modal.id);
+          }
+        });
+      });
+    </script>
+    
+    <script>
+      const API_URL = "http://localhost:3000";
+      const productosList = document.getElementById("productosList");
+      const categoriasMenu = document.getElementById("categoriasMenu");
+      const subtituloCategoria = document.getElementById("subtituloCategoria");
+      const detalleProducto = document.getElementById("detalleProducto");
+      const detalleContenido = document.getElementById("detalleContenido");
+      let currentCategory = 'all';
+
+      function loadAllProducts() {
+        currentCategory = 'all';
+        updateActiveCategory('all');
+        loadProductos();
+      }
+
+      function updateActiveCategory(activeId) {
+        document.querySelectorAll('.category-item').forEach(item => {
+          if (item.getAttribute('data-id') === activeId) {
+            item.classList.add('active');
+            item.classList.add('bg-primary');
+            item.classList.add('text-white');
+            item.classList.remove('bg-gray-100');
+            item.classList.remove('text-secondary');
+          } else {
+            item.classList.remove('active');
+            item.classList.remove('bg-primary');
+            item.classList.remove('text-white');
+            item.classList.add('bg-gray-100');
+            item.classList.add('text-secondary');
+          }
+        });
+      }
+
+      async function loadCategorias() {
+        const res = await fetch(`${API_URL}/categorias`);
+        const categorias = await res.json();
+        
+        // Limpiar solo las categorías dinámicas, mantener "Mostrar Todo"
+        const staticItems = document.querySelectorAll('#categoriasMenu li:first-child');
+        const dynamicItems = document.querySelectorAll('#categoriasMenu li:not(:first-child)');
+        dynamicItems.forEach(item => item.remove());
+        
+        categorias.forEach((cat) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <a class="category-item block bg-gray-100 text-secondary rounded-lg py-2 px-4 font-medium" 
+               href="javascript:void(0)" data-id="${cat.id}" data-nombre="${cat.nombre}">
+              <i class="fas fa-folder mr-2"></i> ${cat.nombre}
+            </a>`;
+          categoriasMenu.appendChild(li);
+        });
+        
+        updateActiveCategory(currentCategory);
+        
+        document.querySelectorAll('.category-item').forEach(item => {
+          if (!item.onclick && item.getAttribute('data-id') !== 'all') {
+            item.addEventListener('click', function() {
+              const id = this.getAttribute('data-id');
+              const nombre = this.getAttribute('data-nombre');
+              currentCategory = id;
+              updateActiveCategory(id);
+              loadProductos(id, nombre);
+            });
+          }
+        });
+        
+        const selectProducto = document.getElementById("productoCategoria");
+        const selectImagen = document.getElementById("imagenProductoSelect");
+        selectProducto.innerHTML = categorias
+          .map((c) => `<option value="${c.id}">${c.nombre}</option>`)
+          .join("");
+        const resProd = await fetch(`${API_URL}/productos`);
+        const productos = await resProd.json();
+        selectImagen.innerHTML = productos
+          .map((p) => `<option value="${p.id}">${p.nombre}</option>`)
+          .join("");
+      }
+
+      async function loadProductos(categoriaId = null, categoriaNombre = null) {
+        let url = `${API_URL}/productos`;
+        if (categoriaId && categoriaId !== 'all') url += `/categoria/${categoriaId}`;
+        const res = await fetch(url);
+        const productos = await res.json();
+        productosList.innerHTML = "";
+        subtituloCategoria.textContent = categoriaNombre
+          ? categoriaNombre
+          : "Todos los productos";
+        
+        if (productos.length === 0) {
+          productosList.innerHTML = `
+            <div class="col-span-3 text-center py-10 text-gray-400">
+              <i class="fas fa-box-open text-4xl mb-3"></i>
+              <p>No hay productos en esta categoría</p>
+            </div>`;
+          return;
+        }
+        
+        productos.forEach((p) => {
+          const card = document.createElement("div");
+          card.className = "bg-white rounded-lg shadow product-card border border-gray-100 overflow-hidden";
+          card.innerHTML = `
+            <img src="${p.imagen || "https://via.placeholder.com/300x200?text=Imagen+No+Disponible"}" class="product-image">
+            <div class="p-4">
+              <h3 class="font-semibold text-secondary truncate">${p.nombre}</h3>
+              <div class="flex justify-between items-center mt-2">
+                <span class="text-lg font-bold text-primary">S/. ${p.precio}</span>
+                <button class="btnDetalle bg-primary hover:bg-secondary text-white py-1 px-3 rounded-full text-sm" data-id="${p.id}">
+                  Ver detalles
+                </button>
+              </div>
+            </div>`;
+          productosList.appendChild(card);
+        });
+        
+        document
+          .querySelectorAll(".btnDetalle")
+          .forEach((btn) =>
+            btn.addEventListener("click", () => showDetalle(btn.dataset.id))
+          );
+      }
+
+      async function showDetalle(id) {
+        const res = await fetch(`${API_URL}/productos/${id}`);
+        const producto = await res.json();
+        
+        document.getElementById("detalleNombre").textContent = producto.nombre;
+        document.getElementById("detallePrecio").textContent = producto.precio;
+        document.getElementById("detalleCategoria").textContent = producto.categoria;
+        
+        const imagenesDiv = document.getElementById("detalleImagenes");
+        imagenesDiv.innerHTML = "";
+        
+        if (producto.imagenes && producto.imagenes.length > 0) {
+          producto.imagenes.forEach((img) => {
+            const imgContainer = document.createElement("div");
+            imgContainer.className = "rounded overflow-hidden";
+            imgContainer.innerHTML = `<img src="${img.url}" class="detail-image">`;
+            imagenesDiv.appendChild(imgContainer);
+          });
+        } else {
+          imagenesDiv.innerHTML = `
+            <div class="col-span-2 text-center py-4 text-gray-400">
+              <i class="fas fa-image text-2xl mb-2"></i>
+              <p class="text-sm">No hay imágenes</p>
+            </div>`;
+        }
+        
+        detalleProducto.classList.add('hidden');
+        detalleContenido.classList.remove('hidden');
+      }
+
+      // Formulario categoría
+      document
+        .getElementById("formCategoria")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const nombre = document.getElementById("categoriaNombre").value;
+          await fetch(`${API_URL}/categorias`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre }),
+          });
+          document.getElementById("categoriaNombre").value = "";
+          loadCategorias();
+          closeModal('addCategoriaModal');
+        });
+
+      // Formulario producto
+      document
+        .getElementById("formProducto")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const nombre = document.getElementById("productoNombre").value;
+          const precio = document.getElementById("productoPrecio").value;
+          const categoria_id = document.getElementById("productoCategoria").value;
+          await fetch(`${API_URL}/productos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, precio, categoria_id }),
+          });
+          document.getElementById("formProducto").reset();
+          loadProductos();
+          loadCategorias(); // actualizar select de imagenes
+          closeModal('addProductoModal');
+        });
+
+      // Formulario imagen
+      document
+        .getElementById("formImagen")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const producto_id = document.getElementById("imagenProductoSelect").value;
+          const url = document.getElementById("imagenURL").value;
+          await fetch(`${API_URL}/imagenes`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ producto_id, url }),
+          });
+          document.getElementById("formImagen").reset();
+          closeModal('addImagenModal');
+        });
+
+      loadCategorias();
+      loadAllProducts();
+    </script>
+  </body>
+</html>
