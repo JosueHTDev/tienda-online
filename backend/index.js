@@ -1,24 +1,40 @@
-// importando lso módulso de express y cors 
-const express = require('express'); // framework para construir APIs de una manera sencilla
-const cors = require('cors'); // ayuda a que compartas tus recursos a otros origenes o dominios externos
-require('dotenv').config(); //  permite cargar las variables de entorno de un archivo .env que tiene información sensible
+// importando los módulos de express y cors 
+const express = require('express'); // framework para construir APIs
+const cors = require('cors'); // permite compartir recursos entre distintos orígenes
+require('dotenv').config(); // carga variables de entorno desde .env
 
-// se crea un instancia de express 
+// Importar rutas
+const productosRoutes = require('./routes/productosRoutes');
+const categoriasRoutes = require('./routes/categoriasRoutes');
+const imagenesRoutes = require('./routes/imagenesRoutes');
+const authRoutes = require('./routes/authRoutes');
+
+// Importar middlewares de autenticación y roles
+const authMiddleware = require('./middlewares/authMiddleware');
+const adminMiddleware = require('./middlewares/adminMiddleware');
+
+// Crear instancia de express 
 const app = express();
 
-// Middleware -> son funciones que se ejecutan entre la solicitud y la respuesta del servidor
-// permite validar, modificar, registrar, etc
-app.use(cors()); // ejecuta el middleware de cors, en todas las solicitudes que se realizan
-app.use(express.json()); // pasa de JSON(cuerpo solicitud) -> objeto de JavaScript para req.body
+// Middlewares globales
+app.use(cors()); 
+app.use(express.json()); 
 
-// primero trata de usar la variable de entorno de .env si no hay conecta al puerto 3000
+// Rutas públicas (no necesitan autenticación)
+app.use('/api/auth', authRoutes); 
+app.use('/api/productos', productosRoutes);   // GET público
+app.use('/api/categorias', categoriasRoutes); // GET público
+app.use('/api/imagenes', imagenesRoutes);     // GET público
+
+// Rutas protegidas (solo admin puede crear, modificar o eliminar)
+app.use('/api/productos', authMiddleware, adminMiddleware, productosRoutes);
+app.use('/api/categorias', authMiddleware, adminMiddleware, categoriasRoutes);
+app.use('/api/imagenes', authMiddleware, adminMiddleware, imagenesRoutes);
+
+// Puerto de conexión
 const PORT = process.env.PORT || 3000;
 
-//ruta de prueba
-app.get('/', (req, res) => {
-    res.send('servidor corriendo')
-})
 // Inicializar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`)
-})
+});
