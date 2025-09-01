@@ -9,11 +9,18 @@ const {
   deleteProducto
 } = require('../controllers/productosController');
 
+const authMiddleware = require('../middlewares/authMiddleware');
+const adminMiddleware = require('../middlewares/adminMiddleware');
+
+// 📌 Rutas públicas
 router.get('/', getAllProductos);
 router.get('/categoria/:categoria_id', getProductosByCategoria);
 router.get('/:id', getProductoById);
-router.post('/', createProducto);
-router.put('/:id', updateProducto);
-router.delete('/:id', deleteProducto);
+
+// 📌 Rutas protegidas (solo admin)
+router.post('/', authMiddleware, adminMiddleware, createProducto);
+router.put('/:id', authMiddleware, adminMiddleware, updateProducto);
+router.delete('/:id', authMiddleware, adminMiddleware, deleteProducto);
 
 module.exports = router;
+

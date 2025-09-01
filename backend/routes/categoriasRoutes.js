@@ -7,9 +7,16 @@ const {
   deleteCategoria
 } = require('../controllers/categoriasController');
 
+const authMiddleware = require('../middlewares/authMiddleware');
+const adminMiddleware = require('../middlewares/adminMiddleware');
+
+// 📌 Ruta pública
 router.get('/', getAllCategorias);
-router.post('/', createCategoria);
-router.put('/:id', updateCategoria);
-router.delete('/:id', deleteCategoria);
+
+// 📌 Rutas protegidas (solo admin)
+router.post('/', authMiddleware, adminMiddleware, createCategoria);
+router.put('/:id', authMiddleware, adminMiddleware, updateCategoria);
+router.delete('/:id', authMiddleware, adminMiddleware, deleteCategoria);
 
 module.exports = router;
+
