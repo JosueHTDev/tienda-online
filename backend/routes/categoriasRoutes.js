@@ -10,10 +10,10 @@ const {
 const authMiddleware = require('../middlewares/authMiddleware');
 const adminMiddleware = require('../middlewares/adminMiddleware');
 
-// 📌 Ruta pública
+// Ruta pública
 router.get('/', getAllCategorias);
 
-// 📌 Rutas protegidas (solo admin)
+// Rutas protegidas (solo admin)
 router.post('/', authMiddleware, adminMiddleware, createCategoria);
 router.put('/:id', authMiddleware, adminMiddleware, updateCategoria);
 router.delete('/:id', authMiddleware, adminMiddleware, deleteCategoria);
