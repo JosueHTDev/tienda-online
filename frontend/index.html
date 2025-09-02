@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">🛒 Tienda Online</h1>
+
+      <!-- Botones antes del login -->
+      <div id="authButtons" class="space-x-2">
+        <a href="login.html" class="bg-white text-blue-600 px-4 py-2 rounded-full">Login</a>
+        <a href="register.html" class="bg-pink-500 text-white px-4 py-2 rounded-full">Registrarse</a>
+      </div>
+
+      <!-- Usuario logueado -->
+      <div id="userInfo" class="hidden flex items-center space-x-4">
+        <span id="usernameDisplay"></span>
+        <button onclick="logout()" class="bg-red-500 text-white px-3 py-1 rounded-full">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
+    
+    <!-- Categorías -->
+    <aside class="bg-white rounded-xl shadow p-5 h-fit lg:col-span-1">
+      <h2 class="text-xl font-bold text-indigo-700 mb-4">Categorías</h2>
+      <ul id="categoriasMenu" class="space-y-2"></ul>
+      <button onclick="mostrarTodos()" class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg">Mostrar Todos</button>
+    </aside>
+
+    <!-- Productos -->
+    <section class="bg-white rounded-xl shadow p-5 lg:col-span-3">
+      <h2 id="subtituloCategoria" class="text-xl font-bold text-indigo-700 mb-4">Todos los productos</h2>
+      <div id="productosList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </section>
+
+    <!-- Detalle -->
+    <aside class="bg-white rounded-xl shadow p-5 h-fit lg:col-span-1">
+      <h2 class="text-xl font-bold text-indigo-700 mb-4">Detalles</h2>
+      <div id="detalleProducto" class="text-center py-10 text-gray-400">Selecciona un producto</div>
+    </aside>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
