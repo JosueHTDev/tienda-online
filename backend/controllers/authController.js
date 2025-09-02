@@ -13,7 +13,7 @@ const register = async (req, res) => {
     }
     // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
-    const id_rol = req.body.id_rol || 2; // Por defecto rol cliente (2)
+    const id_rol = req.body.id_rol || 1;
     // Guardar en DB
     const nuevo = await createUsuarioDB({ usuario, password: hashedPassword, id_rol });
 
