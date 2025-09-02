@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Tienda</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex justify-center items-center h-screen bg-gray-100">
+
+  <div class="bg-white p-8 rounded-xl shadow-md w-96">
+    <h2 class="text-2xl font-bold text-center mb-6 text-pink-500">Registro</h2>
+    <form id="registerForm" class="space-y-4">
+      <input type="text" id="regUsuario" placeholder="Usuario" class="w-full px-4 py-2 border rounded-lg">
+      <input type="password" id="regPassword" placeholder="Contraseña" class="w-full px-4 py-2 border rounded-lg">
+      <button type="submit" class="w-full bg-pink-500 text-white py-2 rounded-lg">Registrarse</button>
+    </form>
+    <p class="text-center text-gray-500 text-sm mt-4">¿Ya tienes cuenta? <a href="login.html" class="text-pink-500">Inicia sesión</a></p>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
+
