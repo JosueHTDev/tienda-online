@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand">Panel de Administración</a>
+      <button id="btnLogout" class="btn btn-danger">Cerrar Sesión</button>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="panelTabs">
+      <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#productos">Productos</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#categorias">Categorías</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#imagenes">Imágenes</a></li>
+    </ul>
+
+    <div class="tab-content mt-3">
+      <!-- Productos -->
+      <div class="tab-pane fade show active" id="productos">
+        <h3>Productos</h3>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#productoModal">Nuevo Producto</button>
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Categoría</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="tablaProductos"></tbody>
+        </table>
+      </div>
+
+      <!-- Categorías -->
+      <div class="tab-pane fade" id="categorias">
+        <h3>Categorías</h3>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#categoriaModal">Nueva Categoría</button>
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="tablaCategorias"></tbody>
+        </table>
+      </div>
+
+      <!-- Imágenes -->
+      <div class="tab-pane fade" id="imagenes">
+        <h3>Imágenes de Productos</h3>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#imagenModal">Nueva Imagen</button>
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>ID</th><th>Producto</th><th>URL</th><th>Vista</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="tablaImagenes"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Producto -->
+  <div class="modal fade" id="productoModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="productoForm">
+          <div class="modal-header"><h5 class="modal-title">Producto</h5></div>
+          <div class="modal-body">
+            <input type="hidden" id="productoId">
+            <div class="mb-3"><label>Nombre</label><input type="text" id="productoNombre" class="form-control" required></div>
+            <div class="mb-3"><label>Precio</label><input type="number" id="productoPrecio" class="form-control" required></div>
+            <div class="mb-3"><label>Categoría</label><select id="productoCategoria" class="form-select"></select></div>
+          </div>
+          <div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Categoría -->
+  <div class="modal fade" id="categoriaModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="categoriaForm">
+          <div class="modal-header"><h5 class="modal-title">Categoría</h5></div>
+          <div class="modal-body">
+            <input type="hidden" id="categoriaId">
+            <div class="mb-3"><label>Nombre</label><input type="text" id="categoriaNombre" class="form-control" required></div>
+          </div>
+          <div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Imagen -->
+  <div class="modal fade" id="imagenModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="imagenForm">
+          <div class="modal-header"><h5 class="modal-title">Imagen</h5></div>
+          <div class="modal-body">
+            <input type="hidden" id="imagenId">
+            <div class="mb-3"><label>Producto</label><select id="imagenProducto" class="form-select"></select></div>
+            <div class="mb-3"><label>URL</label><input type="url" id="imagenUrl" class="form-control" required></div>
+          </div>
+          <div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="panel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

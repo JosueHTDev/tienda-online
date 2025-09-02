@@ -7,6 +7,7 @@ const {
   deleteProductoDB
 } = require('../models/productosModel');
 
+// Obtener todos los productos
 const getAllProductos = async (req, res) => {
   try {
     const productos = await getAllProductosDB();
@@ -16,6 +17,7 @@ const getAllProductos = async (req, res) => {
   }
 };
 
+// Obtener productos por categoría
 const getProductosByCategoria = async (req, res) => {
   try {
     const productos = await getProductosByCategoriaDB(req.params.categoria_id);
@@ -25,6 +27,7 @@ const getProductosByCategoria = async (req, res) => {
   }
 };
 
+// Obtener detalle de un producto
 const getProductoById = async (req, res) => {
   try {
     const producto = await getProductoByIdDB(req.params.id);
@@ -35,6 +38,7 @@ const getProductoById = async (req, res) => {
   }
 };
 
+// Crear producto
 const createProducto = async (req, res) => {
   try {
     const nuevo = await createProductoDB(req.body);
@@ -44,6 +48,7 @@ const createProducto = async (req, res) => {
   }
 };
 
+// Actualizar producto
 const updateProducto = async (req, res) => {
   try {
     const actualizado = await updateProductoDB(req.params.id, req.body);
@@ -53,6 +58,7 @@ const updateProducto = async (req, res) => {
   }
 };
 
+// Eliminar producto
 const deleteProducto = async (req, res) => {
   try {
     const eliminado = await deleteProductoDB(req.params.id);
