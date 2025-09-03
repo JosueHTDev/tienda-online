@@ -156,9 +156,10 @@ async function cargarImagenes() {
           <tr>
             <td>${img.id}</td>
             <td>${p.nombre}</td>
-            <td>${img.url}</td>
+            <td class="truncate-cell">${img.url}</td>
             <td><img src="${img.url}" width="80"></td>
             <td>
+            <button class="btn btn-sm btn-warning" onclick="modificarImagen(${img.id})">Modificar</button>
               <button class="btn btn-sm btn-danger" onclick="eliminarImagen(${img.id})">Eliminar</button>
             </td>
           </tr>`;
@@ -166,6 +167,7 @@ async function cargarImagenes() {
     }
   }
 }
+
 
 document.getElementById("imagenForm").addEventListener("submit", async e => {
   e.preventDefault();
@@ -191,9 +193,15 @@ async function eliminarImagen(id) {
   cargarImagenes();
 }
 
-/*
-   INICIALIZACIÓN //////////////
-*/
+async function modeficarImagen(id) {
+  if (!confirm("¿Modificar imagen?")) return;
+  await fetch(`${API_URL}/imagenes/${id}`, { method: "UPDATE", headers: { "Authorization": `Bearer ${token}` } });
+  cargarImagenes();
+}
+
+
+//   INICIALIZACIÓN //////////////
+
 cargarProductos();
 cargarCategorias();
 cargarImagenes();
