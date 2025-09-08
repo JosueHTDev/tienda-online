@@ -5,59 +5,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de Administración</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="panel.css">
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand">Panel de Administración</a>
-      <button id="btnLogout" class="btn btn-danger">Cerrar Sesión</button>
+      <a class="navbar-brand">
+        <i class="fas fa-cogs me-2"></i>Panel de Administración
+      </a>
+      <button id="btnLogout" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+      </button>
     </div>
   </nav>
 
   <div class="container mt-4">
-    <!-- Tabs -->
+    <!-- Tabs Navigation - Corregido -->
     <ul class="nav nav-tabs" id="panelTabs">
-      <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#productos">Productos</a></li>
-      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#categorias">Categorías</a></li>
-      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#imagenes">Imágenes</a></li>
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#productos">
+          <i class="fas fa-box"></i>Productos
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#categorias">
+          <i class="fas fa-tags"></i>Categorías
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#imagenes">
+          <i class="fas fa-images"></i>Imágenes
+        </a>
+      </li>
     </ul>
 
     <div class="tab-content mt-3">
       <!-- Productos -->
       <div class="tab-pane fade show active" id="productos">
-        <h3>Productos</h3>
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#productoModal">Nuevo Producto</button>
-        <table class="table table-bordered">
-          <thead>
-            <tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Categoría</th><th>Acciones</th></tr>
-          </thead>
-          <tbody id="tablaProductos"></tbody>
-        </table>
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-box"></i>
+              Gestión de Productos
+            </h2>
+            <button class="btn-add" data-bs-toggle="modal" data-bs-target="#productoModal">
+              <i class="fas fa-plus"></i>
+              Nuevo Producto
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaProductos">
+                  <tr>
+                    <td>1</td>
+                    <td>Smartphone X</td>
+                    <td>$599.99</td>
+                    <td>Electrónicos</td>
+                    <td>
+                      <button class="btn btn-edit btn-action">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-delete btn-action">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Zapatillas Deportivas</td>
+                    <td>$89.99</td>
+                    <td>Calzado</td>
+                    <td>
+                      <button class="btn btn-edit btn-action">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-delete btn-action">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Categorías -->
       <div class="tab-pane fade" id="categorias">
-        <h3>Categorías</h3>
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#categoriaModal">Nueva Categoría</button>
-        <table class="table table-bordered">
-          <thead>
-            <tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>
-          </thead>
-          <tbody id="tablaCategorias"></tbody>
-        </table>
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-tags"></i>
+              Gestión de Categorías
+            </h2>
+            <button class="btn-add" data-bs-toggle="modal" data-bs-target="#categoriaModal">
+              <i class="fas fa-plus"></i>
+              Nueva Categoría
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaCategorias">
+            
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Imágenes -->
       <div class="tab-pane fade" id="imagenes">
-        <h3>Imágenes de Productos</h3>
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#imagenModal">Nueva Imagen</button>
-        <table class="table table-bordered">
-          <thead>
-            <tr><th>ID</th><th>Producto</th><th>URL</th><th>Vista</th><th>Acciones</th></tr>
-          </thead>
-          <tbody id="tablaImagenes"></tbody>
-        </table>
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-images"></i>
+              Gestión de Imágenes
+            </h2>
+            <button class="btn-add" data-bs-toggle="modal" data-bs-target="#imagenModal">
+              <i class="fas fa-plus"></i>
+              Nueva Imagen
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>URL</th>
+                    <th>Vista</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaImagenes">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -67,14 +176,36 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <form id="productoForm">
-          <div class="modal-header"><h5 class="modal-title">Producto</h5></div>
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-box"></i>
+              Gestión de Producto
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
           <div class="modal-body">
             <input type="hidden" id="productoId">
-            <div class="mb-3"><label>Nombre</label><input type="text" id="productoNombre" class="form-control" required></div>
-            <div class="mb-3"><label>Precio</label><input type="number" id="productoPrecio" class="form-control" required></div>
-            <div class="mb-3"><label>Categoría</label><select id="productoCategoria" class="form-select"></select></div>
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" id="productoNombre" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Precio</label>
+              <input type="number" id="productoPrecio" class="form-control" required step="0.01">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Categoría</label>
+              <select id="productoCategoria" class="form-select">
+                <option value="1">Electrónicos</option>
+                <option value="2">Ropa</option>
+                <option value="3">Calzado</option>
+              </select>
+            </div>
           </div>
-          <div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn-submit">Guardar Producto</button>
+          </div>
         </form>
       </div>
     </div>
@@ -85,12 +216,24 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <form id="categoriaForm">
-          <div class="modal-header"><h5 class="modal-title">Categoría</h5></div>
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-tag"></i>
+              Gestión de Categoría
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
           <div class="modal-body">
             <input type="hidden" id="categoriaId">
-            <div class="mb-3"><label>Nombre</label><input type="text" id="categoriaNombre" class="form-control" required></div>
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" id="categoriaNombre" class="form-control" required>
+            </div>
           </div>
-          <div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn-submit">Guardar Categoría</button>
+          </div>
         </form>
       </div>
     </div>
@@ -101,19 +244,71 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <form id="imagenForm">
-          <div class="modal-header"><h5 class="modal-title">Imagen</h5></div>
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-image"></i>
+              Gestión de Imagen
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
           <div class="modal-body">
             <input type="hidden" id="imagenId">
-            <div class="mb-3"><label>Producto</label><select id="imagenProducto" class="form-select"></select></div>
-            <div class="mb-3"><label>URL</label><input type="url" id="imagenUrl" class="form-control" required></div>
+            <div class="mb-3">
+              <label class="form-label">Producto</label>
+              <select id="imagenProducto" class="form-select">
+                <option value="1">Smartphone X</option>
+                <option value="2">Zapatillas Deportivas</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">URL</label>
+              <input type="url" id="imagenUrl" class="form-control" required>
+            </div>
+            <div class="mb-3" id="imagePreviewContainer">
+              <label class="form-label">Vista Previa</label>
+              <div class="mt-2">
+                <img id="imagePreview" src="https://via.placeholder.com/300x200?text=Imagen+no+disponible" alt="Vista previa" class="img-fluid rounded">
+              </div>
+            </div>
           </div>
-          <div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn-submit">Guardar Imagen</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <script src="panel.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Script para la previsualización de imágenes
+    document.addEventListener('DOMContentLoaded', function() {
+      const imagenUrl = document.getElementById('imagenUrl');
+      const imagePreview = document.getElementById('imagePreview');
+      
+      if (imagenUrl) {
+        imagenUrl.addEventListener('input', function() {
+          if (this.value) {
+            imagePreview.src = this.value;
+            
+            // Verificar si la imagen carga correctamente 
+            imagePreview.onerror = function() {
+              imagePreview.src = "https://via.placeholder.com/300x200?text=Imagen+no+disponible";
+            };
+          } else {
+            imagePreview.src = "https://via.placeholder.com/300x200?text=Imagen+no+disponible";
+          }
+        });
+      }
+      
+      // Inicializar tabs de Bootstrap correctamente
+      const triggerTabList = [].slice.call(document.querySelectorAll('#panelTabs a'));
+      triggerTabList.forEach(function(triggerEl) {
+        new bootstrap.Tab(triggerEl);
+      });
+    });
+  </script>
+  <script src="panel.js"></script>
 </body>
 </html>

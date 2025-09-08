@@ -24,6 +24,7 @@ async function cargarProductos() {
 // Cargar productos por categoría
 async function cargarProductosPorCategoria(categoriaId) {
   const res = await fetch(`${API_URL}/productos/categoria/${categoriaId}`);
+  console.log(res)
   const productos = await res.json();
   mostrarProductos(productos);
 }
@@ -70,7 +71,7 @@ async function verDetalle(id) {
           ${imagenes
             .map(
               (img) =>
-                `<img src="${img.url}" class="img-thumbnail m-1" style="width:100px;">`
+                `<img src="${img.url}" class="img-thumbnail m-1" style="width:200px;">`
             )
             .join("")}
         </div>
